@@ -1,0 +1,48 @@
+name: wire
+version: '2.15.2751'
+summary: Secure and private chat with end-to-end encryption
+description: |
+  Text, voice, video and media on Wire are always end-to-end encrypted
+  1:1 and in groups, so all your conversations are secure and private.
+  Conversations are available on multiple devices and platforms without
+  weakening security.
+
+grade: stable
+confinement: strict
+
+parts:
+  wire:
+    plugin: dump
+    source: https://wire-app.wire.com/linux/debian/pool/main/wire_2.15.2751_amd64.deb
+    prepare: |
+      sed -i 's|Icon=wire-desktop|Icon=/usr/share/icons/hicolor/256x256/apps/wire-desktop\.png|g' usr/share/applications/wire-desktop.desktop
+    after:
+      - desktop-gtk2
+    stage-packages:
+      - gconf2
+      - libasound2
+      - libnotify4
+      - libnspr4
+      - libnss3
+      - libpulse0
+      - libxss1
+      - libxtst6
+  electron-launch:
+    plugin: dump
+    source: .
+    organize:
+      electron-launch: bin/electron-launch
+
+apps:
+  wire:
+    command: bin/electron-launch ${SNAP}/opt/wire-desktop/wire-desktop
+    desktop: usr/share/applications/wire-desktop.desktop
+    plugs:
+      - home
+      - network
+      - browser-support
+      - gsettings
+      - mount-observe
+      - pulseaudio
+      - unity7
+      - x11
