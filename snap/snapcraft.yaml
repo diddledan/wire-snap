@@ -13,7 +13,7 @@ confinement: strict
 parts:
   wire:
     plugin: dump
-    source: https://wire-app.wire.com/linux/debian/pool/main/wire_2.15.2751_amd64.deb
+    source: https://wire-app.wire.com/linux/debian/pool/main/wire_$SNAPCRAFT_PROJECT_VERSION_amd64.deb
     prepare: |
       sed -i 's|Icon=wire-desktop|Icon=/usr/share/icons/hicolor/256x256/apps/wire-desktop\.png|g' usr/share/applications/wire-desktop.desktop
     after:
