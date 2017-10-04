@@ -38,11 +38,15 @@ apps:
     command: bin/electron-launch ${SNAP}/opt/wire-desktop/wire-desktop
     desktop: usr/share/applications/wire-desktop.desktop
     plugs:
-      - home
-      - network
+      - bluez
       - browser-support
+      - camera
       - gsettings
+      - home
       - mount-observe
+      - network
+      - opengl
       - pulseaudio
+      - screen-inhibit-control
       - unity7
       - x11
