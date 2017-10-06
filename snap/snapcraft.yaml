@@ -11,33 +11,41 @@ grade: stable
 confinement: strict
 
 parts:
+  alsa-config:
+    plugin: dump
+    source: files/
+    prepare: |
+      sed -i 's/appname/wire/g' etc/alsa.conf
+      sed -i 's/appname/wire/g' etc/alsa/cards/*.conf
+
   wire:
     plugin: dump
     source: https://wire-app.wire.com/linux/debian/pool/main/wire_$SNAPCRAFT_PROJECT_VERSION_amd64.deb
     prepare: |
       sed -i 's|Icon=wire-desktop|Icon=/usr/share/icons/hicolor/256x256/apps/wire-desktop\.png|g' usr/share/applications/wire-desktop.desktop
     after:
+      - alsa-config
       - desktop-gtk2
     stage-packages:
-      - gconf2
       - libasound2
+      - libgconf2-4
       - libnotify4
       - libnspr4
       - libnss3
       - libpulse0
       - libxss1
       - libxtst6
-  electron-launch:
-    plugin: dump
-    source: .
-    organize:
-      electron-launch: bin/electron-launch
 
 apps:
   wire:
-    command: bin/electron-launch ${SNAP}/opt/wire-desktop/wire-desktop
+    command: bin/desktop-launch $SNAP/opt/wire-desktop/wire-desktop
     desktop: usr/share/applications/wire-desktop.desktop
+    # Correct the TMPDIR path for Chromium Framework/Electron to ensure
+    # libappindicator has readable resources.
+    environment:
+      TMPDIR: $XDG_RUNTIME_DIR
     plugs:
+      - alsa
       - bluez
       - browser-support
       - camera
@@ -45,7 +53,6 @@ apps:
       - home
       - mount-observe
       - network
-      - opengl
       - pulseaudio
       - screen-inhibit-control
       - unity7
