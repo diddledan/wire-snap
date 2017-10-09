@@ -23,9 +23,12 @@ parts:
     source: https://wire-app.wire.com/linux/debian/pool/main/wire_$SNAPCRAFT_PROJECT_VERSION_amd64.deb
     prepare: |
       sed -i 's|Icon=wire-desktop|Icon=/usr/share/icons/hicolor/256x256/apps/wire-desktop\.png|g' usr/share/applications/wire-desktop.desktop
+      execstack --clear-execstack opt/wire-desktop/wire-desktop
     after:
       - alsa-config
       - desktop-gtk2
+    build-packages:
+      - execstack
     stage-packages:
       - libasound2
       - libgconf2-4
