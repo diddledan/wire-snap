@@ -37,6 +37,7 @@ parts:
       - libnotify4
       - libnspr4
       - libnss3
+      - libpcre3
       - libpulse0
       - libxss1
       - libxtst6
@@ -48,6 +49,7 @@ apps:
     # Correct the TMPDIR path for Chromium Framework/Electron to ensure
     # libappindicator has readable resources.
     environment:
+      ALSA_CONFIG_PATH: $SNAP/etc
       TMPDIR: $XDG_RUNTIME_DIR
     plugs:
       - alsa
