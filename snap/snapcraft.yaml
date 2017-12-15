@@ -1,5 +1,5 @@
 name: wire
-version: '2.17.2813'
+version: '3.0.2816'
 summary: Secure and private chat with end-to-end encryption
 description: |
   Text, voice, video and media on Wire are always end-to-end encrypted
@@ -62,4 +62,6 @@ apps:
       - pulseaudio
       - screen-inhibit-control
       - unity7
-      - x11
+      - desktop
+      - desktop-legacy
+      - wayland
