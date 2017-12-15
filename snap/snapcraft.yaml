@@ -32,6 +32,8 @@ parts:
     stage-packages:
       - libasound2
       - libgconf2-4
+      - libgl1-mesa-glx
+      - libglu1-mesa
       - libnotify4
       - libnspr4
       - libnss3
