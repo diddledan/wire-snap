@@ -11,7 +11,7 @@ for INTERFACE in \
     camera \
     mount-observe; do
 
-    snap connect wire:${INTERFACE} core:${INTERFACE}
+    snap connect wire:${INTERFACE}
 done
 
 
