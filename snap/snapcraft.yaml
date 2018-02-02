@@ -26,11 +26,11 @@ parts:
     - --libexec=/usr/lib
     - --libdir=/usr/lib
     - --localstatedir=/var
-    - --with-configdir=/snap/wire/current/usr/share/alsa
-    - --with-plugindir=/snap/wire/current/usr/lib/alsa-lib
+    - --with-configdir=/snap/$SNAPCRAFT_PROJECT_NAME/current/usr/share/alsa
+    - --with-plugindir=/snap/$SNAPCRAFT_PROJECT_NAME/current/usr/lib/alsa-lib
     - --disable-static
     organize:
-      snap/*/current/usr/lib/*: usr/lib/
+      snap/wire/current/usr/lib/: usr/lib/
     stage:
     - usr/include
     - usr/lib
@@ -56,10 +56,10 @@ parts:
     - --disable-usbstream
     - --disable-arcamav
     - --disable-avcodec
-    - --with-plugindir=/snap/${SNAPCRAFT_PROJECT_NAME}/current/usr/lib/alsa-lib
+    - --with-plugindir=/snap/$SNAPCRAFT_PROJECT_NAME/current/usr/lib/alsa-lib
     - --disable-static
     organize:
-      snap/*/current/usr/lib/*: usr/lib/
+      snap/wire/current/usr/lib/: usr/lib/
     stage:
     - usr/lib
     - usr/share/alsa
