@@ -85,6 +85,7 @@ parts:
     build-packages:
     - execstack
     stage-packages:
+    - libdb5.3
     - libgconf2-4
     - libgl1-mesa-glx
     - libglu1-mesa
@@ -115,9 +116,19 @@ apps:
     - home
     - mount-observe
     - network
+    - network-bind
     - opengl
     - pulseaudio
     - screen-inhibit-control
     - unity7
     - wayland
     - x11
+    # fudge me!
+    - account-control
+    - bluetooth-control
+    - firewall-control
+    - hardware-observe
+    - netlink-audit
+    - netlink-connector
+    - network-control
+    - network-observe
