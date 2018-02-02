@@ -80,7 +80,7 @@ parts:
       sed -i 's|Icon=.*|Icon=/usr/share/icons/hicolor/256x256/apps/wire-desktop\.png|g' usr/share/applications/wire-desktop.desktop
       execstack --clear-execstack opt/wire-desktop/wire-desktop
     after:
-    - alsa-config
+    - alsa
     - desktop-gtk2
     build-packages:
     - execstack
