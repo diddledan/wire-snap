@@ -13,34 +13,88 @@ confinement: strict
 parts:
   alsa-config:
     plugin: dump
-    source: files/
-    prepare: |
-      sed -i 's/appname/wire/g' etc/alsa.conf
-      sed -i 's/appname/wire/g' etc/alsa/cards/*.conf
+    source: alsa
+    organize:
+      alsa.conf: etc/alsa.conf
+
+  alsa-lib:
+    plugin: autotools
+    source: ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.1.5.tar.bz2
+    configflags:
+    - --prefix=/usr
+    - --sysconfdir=/etc
+    - --libexec=/usr/lib
+    - --libdir=/usr/lib
+    - --localstatedir=/var
+    - --with-configdir=/snap/wire/current/usr/share/alsa
+    - --with-plugindir=/snap/wire/current/usr/lib/alsa-lib
+    - --disable-static
+    organize:
+      snap/*/current/usr/lib/*: usr/lib/
+    stage:
+    - usr/include
+    - usr/lib
+    prime:
+    - -usr/bin
+    - -usr/include
+    - -usr/lib/pkgconfig
+    - -usr/share/alsa/alsa.conf
+    - -usr/share/alsa/pcm
+    - -usr/share/alsa/topology/broadwell
+
+  alsa-plugins:
+    after: [alsa-lib]
+    plugin: autotools
+    source: ftp://ftp.alsa-project.org/pub/plugins/alsa-plugins-1.1.5.tar.bz2
+    configflags:
+    - --prefix=/usr
+    - --sysconfdir=/etc
+    - --libexec=/usr/lib
+    - --libdir=/usr/lib
+    - --localstatedir=/var
+    - --disable-oss
+    - --disable-usbstream
+    - --disable-arcamav
+    - --disable-avcodec
+    - --with-plugindir=/snap/${SNAPCRAFT_PROJECT_NAME}/current/usr/lib/alsa-lib
+    - --disable-static
+    organize:
+      snap/*/current/usr/lib/*: usr/lib/
+    stage:
+    - usr/lib
+    - usr/share/alsa
+    build-packages:
+    - libpulse-dev
+    stage-packages:
+    - libpulse0
+
+  alsa:
+    plugin: nil
+    after: [alsa-plugins, alsa-lib, alsa-config]
 
   wire:
+    after: [alsa]
     plugin: dump
     source: https://wire-app.wire.com/linux/debian/pool/main/wire_$SNAPCRAFT_PROJECT_VERSION_amd64.deb
     prepare: |
-      sed -i 's|Icon=wire-desktop|Icon=/usr/share/icons/hicolor/256x256/apps/wire-desktop\.png|g' usr/share/applications/wire-desktop.desktop
+      sed -i 's|Icon=.*|Icon=/usr/share/icons/hicolor/256x256/apps/wire-desktop\.png|g' usr/share/applications/wire-desktop.desktop
       execstack --clear-execstack opt/wire-desktop/wire-desktop
     after:
-      - alsa-config
-      - desktop-gtk2
+    - alsa-config
+    - desktop-gtk2
     build-packages:
-      - execstack
+    - execstack
     stage-packages:
-      - libasound2
-      - libgconf2-4
-      - libgl1-mesa-glx
-      - libglu1-mesa
-      - libnotify4
-      - libnspr4
-      - libnss3
-      - libpcre3
-      - libpulse0
-      - libxss1
-      - libxtst6
+    - libgconf2-4
+    - libgl1-mesa-glx
+    - libglu1-mesa
+    - libnotify4
+    - libnspr4
+    - libnss3
+    - libpcre3
+    - libpulse0
+    - libxss1
+    - libxtst6
 
 apps:
   wire:
@@ -49,22 +103,21 @@ apps:
     # Correct the TMPDIR path for Chromium Framework/Electron to ensure
     # libappindicator has readable resources.
     environment:
-      ALSA_CONFIG_PATH: $SNAP/etc
+      ALSA_CONFIG_PATH: $SNAP/etc/alsa.conf
       TMPDIR: $XDG_RUNTIME_DIR
     plugs:
-      - alsa
-      - bluez
-      - browser-support
-      - camera
-      - desktop
-      - desktop-legacy
-      - gsettings
-      - home
-      - mount-observe
-      - network
-      - opengl
-      - pulseaudio
-      - screen-inhibit-control
-      - unity7
-      - wayland
-      - x11
+    - bluez
+    - browser-support
+    - camera
+    - desktop
+    - desktop-legacy
+    - gsettings
+    - home
+    - mount-observe
+    - network
+    - opengl
+    - pulseaudio
+    - screen-inhibit-control
+    - unity7
+    - wayland
+    - x11
