@@ -73,7 +73,6 @@ parts:
     after: [alsa-plugins, alsa-lib, alsa-config]
 
   wire:
-    after: [alsa]
     plugin: dump
     source: https://wire-app.wire.com/linux/debian/pool/main/wire_$SNAPCRAFT_PROJECT_VERSION_amd64.deb
     prepare: |
